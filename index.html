@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#f8fafc" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>TrenchLog — Bright Memecoin Trading Journal</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Default Theme: Daylight Clean (Cerah Putih-Biru Indigo) */
+      --bg-main: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-subtle: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-col: #e2e8f0;
+      --accent: #4f46e5;
+      --accent-soft: #eef2ff;
+      --accent-text: #ffffff;
+      --shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+    }
+
+    /* Theme 2: Matcha Mint (Cerah Hijau Sejuk) */
+    [data-theme="matcha"] {
+      --bg-main: #ecfdf5;
+      --bg-card: #ffffff;
+      --bg-subtle: #f0fdf4;
+      --text-main: #064e3b;
+      --text-muted: #047857;
+      --border-col: #a7f3d0;
+      --accent: #059669;
+      --accent-soft: #d1fae5;
+      --accent-text: #ffffff;
+      --shadow: 0 4px 20px -2px rgba(5, 150, 105, 0.08);
+    }
+
+    /* Theme 3: Ocean Breeze (Cerah Biru Langit) */
+    [data-theme="ocean"] {
+      --bg-main: #f0f9ff;
+      --bg-card: #ffffff;
+      --bg-subtle: #e0f2fe;
+      --text-main: #0c4a6e;
+      --text-muted: #0369a1;
+      --border-col: #bae6fd;
+      --accent: #0284c7;
+      --accent-soft: #e0f2fe;
+      --accent-text: #ffffff;
+      --shadow: 0 4px 20px -2px rgba(2, 132, 199, 0.08);
+    }
+
+    /* Theme 4: Sakura Warm (Cerah Krem & Rose) */
+    [data-theme="sakura"] {
+      --bg-main: #fff1f2;
+      --bg-card: #ffffff;
+      --bg-subtle: #ffe4e6;
+      --text-main: #4c0519;
+      --text-muted: #be123c;
+      --border-col: #fecdd3;
+      --accent: #e11d48;
+      --accent-soft: #ffe4e6;
+      --accent-text: #ffffff;
+      --shadow: 0 4px 20px -2px rgba(225, 29, 72, 0.08);
+    }
+
+    /* Theme 5: Cyber Amber (Cerah Kontras Kuning Emas) */
+    [data-theme="amber"] {
+      --bg-main: #fffbeb;
+      --bg-card: #ffffff;
+      --bg-subtle: #fef3c7;
+      --text-main: #451a03;
+      --text-muted: #b45309;
+      --border-col: #fde68a;
+      --accent: #d97706;
+      --accent-soft: #fef3c7;
+      --accent-text: #ffffff;
+      --shadow: 0 4px 20px -2px rgba(217, 119, 6, 0.08);
+    }
+
+    /* Theme 6: Midnight Neon (Mode Malam / Gelap) */
+    [data-theme="midnight"] {
+      --bg-main: #090d16;
+      --bg-card: #111827;
+      --bg-subtle: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-col: #1f2937;
+      --accent: #8b5cf6;
+      --accent-soft: #1e1b4b;
+      --accent-text: #ffffff;
+      --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .theme-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-col);
+      box-shadow: var(--shadow);
+      transition: all 0.25s ease;
+    }
+
+    .theme-subtle {
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-col);
+    }
+
+    .theme-btn {
+      background-color: var(--accent);
+      color: var(--accent-text);
+    }
+
+    .theme-badge {
+      background-color: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--border-col);
+    }
+
+    .text-muted-custom {
+      color: var(--text-muted);
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen pb-28">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-30 theme-card border-b px-4 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-2xl theme-btn flex items-center justify-center shadow-md">
+          <i data-lucide="CandlestickChart" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="font-extrabold text-base tracking-tight">TrenchLog</h1>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full theme-badge">v2.0</span>
+          </div>
+          <p class="text-[11px] text-muted-custom font-medium">Jurnal & Pengingat Disiplin Memecoin</p>
+        </div>
+      </div>
+
+      <!-- SOL Price & Backup -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center theme-subtle rounded-xl px-2.5 py-1.5">
+          <span class="text-[11px] font-mono font-bold mr-1">SOL $</span>
+          <input id="solPriceInput" type="number" value="150" onchange="updateSolPrice(this.value)"
+            class="w-12 bg-transparent text-xs font-mono font-extrabold focus:outline-none text-right" />
+        </div>
+        <button onclick="openModal('settingsModal')" class="p-2 rounded-xl theme-subtle hover:opacity-80" title="Backup & Pengaturan">
+          <i data-lucide="settings-2" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- THEME SWITCHER BAR -->
+    <div class="max-w-4xl mx-auto mt-3 pt-2.5 border-t border-slate-200/60 dark:border-slate-800 flex items-center gap-2 overflow-x-auto no-scrollbar">
+      <span class="text-[11px] font-bold text-muted-custom shrink-0 flex items-center gap-1">
+        <i data-lucide="palette" class="w-3.5 h-3.5"></i> Tema:
+      </span>
+      <button onclick="setTheme('daylight')" id="t-daylight" class="theme-pill shrink-0 px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 bg-white text-slate-800 border-slate-300 shadow-sm">
+        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span> ☀️ Cerah Putih
+      </button>
+      <button onclick="setTheme('matcha')" id="t-matcha" class="theme-pill shrink-0 px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 bg-emerald-50 text-emerald-900 border-emerald-300">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> 🍵 Matcha Mint
+      </button>
+      <button onclick="setTheme('ocean')" id="t-ocean" class="theme-pill shrink-0 px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 bg-sky-50 text-sky-900 border-sky-300">
+        <span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span> 🌊 Biru Langit
+      </button>
+      <button onclick="setTheme('sakura')" id="t-sakura" class="theme-pill shrink-0 px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 bg-rose-50 text-rose-900 border-rose-300">
+        <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> 🌸 Sakura Warm
+      </button>
+      <button onclick="setTheme('amber')" id="t-amber" class="theme-pill shrink-0 px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 bg-amber-50 text-amber-900 border-amber-300">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span> ⚡ Cyber Gold
+      </button>
+      <button onclick="setTheme('midnight')" id="t-midnight" class="theme-pill shrink-0 px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 bg-slate-900 text-white border-slate-700">
+        <span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span> 🌌 Mode Malam
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 pt-4 space-y-5">
+
+    <!-- TILT GUARD / ALARM BATAS LOSS HARIAN (Muncul otomatis jika loss hari ini mencapai batas) -->
+    <div id="tiltGuardAlert" class="hidden rounded-2xl bg-rose-600 text-white p-4 shadow-lg">
+      <div class="flex items-start gap-3">
+        <div class="p-2 rounded-xl bg-white/20 shrink-0">
+          <i data-lucide="Siren" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h2 class="font-extrabold text-sm uppercase tracking-wide">STOP TRADING HARI INI! (TILT GUARD AKTIF)</h2>
+          <p id="tiltGuardText" class="text-xs mt-1 text-rose-100 leading-relaxed">
+            Kamu sudah mencapai batas maksimal loss hari ini. Jangan balas dendam (revenge trade) karena kondisi emosi sedang tidak stabil. Tutup DEX sekarang dan evaluasi besok!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. BANNER PENGINGAT & EVALUASI HARIAN -->
+    <section class="rounded-2xl bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-transparent border-2 border-rose-400/50 p-4 theme-card">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 text-rose-600 font-extrabold text-xs uppercase tracking-wider">
+          <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+          <span>Pengingat Wajib Sebelum Entry Hari Ini</span>
+        </div>
+        <button onclick="editDailyRule()" class="text-[11px] font-bold px-2.5 py-1 rounded-lg theme-subtle hover:opacity-80 flex items-center gap-1">
+          <i data-lucide="pencil" class="w-3 h-3"></i> Ubah Janji
+        </button>
+      </div>
+
+      <p id="dailyRuleText" class="mt-2.5 text-sm font-bold border-l-4 border-rose-500 pl-3 py-1">
+        "Jangan pernah FOMO beli di pucuk candle hijau! Wajib cek Top 10 Holder & Bundler dulu. Kalau loss 2x sehari, langsung istirahat!"
+      </p>
+
+      <!-- Auto-detected Top Mistakes -->
+      <div class="mt-3 pt-3 border-t border-rose-300/40">
+        <p class="text-xs font-bold text-rose-600 mb-2">📌 Penyebab Loss Terbesar Kamu yang Harus Dikoreksi:</p>
+        <div id="topMistakesBanner" class="flex flex-wrap gap-1.5"></div>
+      </div>
+    </section>
+
+    <!-- VIEW: DASHBOARD -->
+    <div id="tab-dashboard" class="space-y-5">
+
+      <!-- 4 KARTU STATISTIK UTAMA -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="theme-card rounded-2xl p-3.5">
+          <div class="flex items-center justify-between text-muted-custom text-xs font-semibold">
+            <span>Total Net PnL</span>
+            <i data-lucide="wallet" class="w-4 h-4"></i>
+          </div>
+          <div id="statNetSol" class="mt-1.5 text-xl font-extrabold font-mono">0.00 SOL</div>
+          <div id="statNetUsd" class="text-xs font-mono text-muted-custom">≈ $0.00</div>
+        </div>
+
+        <div class="theme-card rounded-2xl p-3.5">
+          <div class="flex items-center justify-between text-muted-custom text-xs font-semibold">
+            <span>Win Rate</span>
+            <i data-lucide="award" class="w-4 h-4"></i>
+          </div>
+          <div id="statWinRate" class="mt-1.5 text-xl font-extrabold font-mono">0%</div>
+          <div id="statWinLossCount" class="text-xs text-muted-custom font-medium">0W / 0L</div>
+        </div>
+
+        <div class="theme-card rounded-2xl p-3.5">
+          <div class="flex items-center justify-between text-muted-custom text-xs font-semibold">
+            <span>Hari Ini</span>
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+          </div>
+          <div id="statTodaySol" class="mt-1.5 text-xl font-extrabold font-mono">0.00 SOL</div>
+          <div id="statTodayStatus" class="text-xs text-muted-custom font-medium">Batas Loss: 0/2</div>
+        </div>
+
+        <div class="theme-card rounded-2xl p-3.5">
+          <div class="flex items-center justify-between text-muted-custom text-xs font-semibold">
+            <span>Penyakit Utama</span>
+            <i data-lucide="flame" class="w-4 h-4 text-rose-500"></i>
+          </div>
+          <div id="statBiggestLeak" class="mt-1.5 text-sm font-extrabold text-rose-600 truncate">-</div>
+          <div id="statBiggestLeakVal" class="text-xs font-mono text-muted-custom">0.00 SOL hilang</div>
+        </div>
+      </div>
+
+      <!-- GRAFIK & CHECKLIST -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <!-- Kurva Ekuitas -->
+        <div class="md:col-span-3 theme-card rounded-2xl p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="line-chart" class="w-4 h-4"></i> Grafik Pertumbuhan Saldo (SOL)
+            </h2>
+          </div>
+          <div class="h-52 w-full">
+            <canvas id="equityChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Checklist Sebelum Buy -->
+        <div class="md:col-span-2 theme-card rounded-2xl p-4 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h2 class="text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="shield-check" class="w-4 h-4"></i> Cek Sebelum Buy!
+              </h2>
+              <button onclick="resetChecklist()" class="text-xs font-bold text-muted-custom hover:underline">Reset</button>
+            </div>
+            <p class="text-xs text-muted-custom mb-3">Wajib centang semua sebelum beli koin:</p>
+
+            <div class="space-y-2 text-xs font-medium">
+              <label class="flex items-center gap-2.5 p-2.5 rounded-xl theme-subtle cursor-pointer">
+                <input type="checkbox" onchange="updateChecklistScore()" class="chk-item accent-emerald-600 w-4 h-4 rounded" />
+                <span>Bundler & Top 10 Holder aman</span>
+              </label>
+              <label class="flex items-center gap-2.5 p-2.5 rounded-xl theme-subtle cursor-pointer">
+                <input type="checkbox" onchange="updateChecklistScore()" class="chk-item accent-emerald-600 w-4 h-4 rounded" />
+                <span>Beli di support/koreksi (Bukan FOMO pucuk)</span>
+              </label>
+              <label class="flex items-center gap-2.5 p-2.5 rounded-xl theme-subtle cursor-pointer">
+                <input type="checkbox" onchange="updateChecklistScore()" class="chk-item accent-emerald-600 w-4 h-4 rounded" />
+                <span>Sudah tahu titik Cut Loss & TP</span>
+              </label>
+              <label class="flex items-center gap-2.5 p-2.5 rounded-xl theme-subtle cursor-pointer">
+                <input type="checkbox" onchange="updateChecklistScore()" class="chk-item accent-emerald-600 w-4 h-4 rounded" />
+                <span>Pikiran tenang & ukuran modal wajar</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="checklistStatus" class="mt-3 p-2.5 rounded-xl bg-rose-500/15 border border-rose-400/40 text-center text-xs font-extrabold text-rose-600">
+            ❌ Skor: 0/4 — Jangan asal pencet Buy!
+          </div>
+        </div>
+      </div>
+
+      <!-- DAFTAR RIWAYAT JURNAL -->
+      <div class="theme-card rounded-2xl p-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <h2 class="text-sm font-extrabold flex items-center gap-2">
+            <i data-lucide="book-open-check" class="w-4 h-4"></i> Catatan Evaluasi Harian
+          </h2>
+
+          <div class="flex items-center gap-2">
+            <select id="filterResult" onchange="renderTrades()" class="theme-subtle text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none">
+              <option value="ALL">Semua Trade</option>
+              <option value="LOSS">Hanya Saat Loss (Evaluasi)</option>
+              <option value="WIN">Hanya Saat Profit</option>
+            </select>
+            <input id="searchTicker" type="text" oninput="renderTrades()" placeholder="Cari $KOIN / catatan..."
+              class="theme-subtle text-xs font-medium rounded-xl px-3 py-2 focus:outline-none w-44" />
+          </div>
+        </div>
+
+        <div id="tradesList" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- VIEW: ANALYTICS / RAPOR KESALAHAN -->
+    <div id="tab-analytics" class="hidden space-y-5">
+      <div class="theme-card rounded-2xl p-4">
+        <h2 class="text-sm font-extrabold flex items-center gap-2 mb-1">
+          <i data-lucide="flame" class="w-4 h-4 text-rose-500"></i> Rapor Kesalahan Paling Sering Bikin Boncos
+        </h2>
+        <p class="text-xs text-muted-custom mb-4">Evaluasi kebiasaan mana yang paling banyak menguras SOL kamu:</p>
+        <div id="mistakeBreakdownList" class="space-y-2.5"></div>
+      </div>
+
+      <div class="theme-card rounded-2xl p-4">
+        <h2 class="text-sm font-extrabold flex items-center gap-2 mb-1">
+          <i data-lucide="smile-plus" class="w-4 h-4"></i> Perbandingan Hasil Berdasarkan Emosi
+        </h2>
+        <p class="text-xs text-muted-custom mb-4">Buktikan sendiri bedanya trading saat tenang vs saat FOMO/emosi:</p>
+        <div id="emotionBreakdownList" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="fixed bottom-0 left-0 right-0 z-30 theme-card border-t px-6 py-2">
+    <div class="max-w-md mx-auto flex items-center justify-around">
+      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 font-extrabold text-xs py-1">
+        <i data-lucide="layout-grid" class="w-5 h-5"></i>
+        <span>Beranda Jurnal</span>
+      </button>
+
+      <button onclick="openTradeModal()" class="-mt-7 theme-btn font-extrabold px-5 py-3.5 rounded-2xl shadow-lg flex items-center gap-2 text-xs hover:scale-105 transition">
+        <i data-lucide="plus-circle" class="w-5 h-5"></i>
+        <span>Catat Trade</span>
+      </button>
+
+      <button onclick="switchTab('analytics')" id="nav-analytics" class="flex flex-col items-center gap-1 text-muted-custom font-bold text-xs py-1">
+        <i data-lucide="file-warning" class="w-5 h-5"></i>
+        <span>Rapor Loss</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MODAL: TAMBAH CATATAN TRADE -->
+  <div id="tradeModal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="theme-card w-full max-w-lg rounded-t-3xl sm:rounded-2xl max-h-[92vh] overflow-y-auto p-5 space-y-4">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="font-extrabold text-base flex items-center gap-2">
+          <i data-lucide="notebook-pen" class="w-5 h-5"></i> Catat Trade & Evaluasi
+        </h3>
+        <button onclick="closeModal('tradeModal')" class="p-1 rounded-lg theme-subtle">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="tradeForm" onsubmit="saveTrade(event)" class="space-y-3.5 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1">Ticker Koin *</label>
+            <input id="fTicker" type="text" required placeholder="Contoh: $WIF"
+              class="w-full theme-subtle rounded-xl px-3 py-2.5 font-extrabold uppercase focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Platform DEX</label>
+            <select id="fPlatform" class="w-full theme-subtle rounded-xl px-3 py-2.5 font-semibold focus:outline-none">
+              <option value="GMGN">GMGN.ai</option>
+              <option value="Padre / BullX">Padre / BullX</option>
+              <option value="Photon">Photon</option>
+              <option value="Jupiter / Phantom">Jupiter / Phantom</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1">Contract Address / CA (Opsional - Buat Buka Chart Lagi)</label>
+          <input id="fCa" type="text" placeholder="Tempel CA Solana di sini..."
+            class="w-full theme-subtle rounded-xl px-3 py-2 font-mono text-[11px] focus:outline-none" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1">Market Cap Masuk</label>
+            <input id="fMcEntry" type="text" placeholder="Misal: 50K"
+              class="w-full theme-subtle rounded-xl px-3 py-2 font-mono focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Market Cap Keluar</label>
+            <input id="fMcExit" type="text" placeholder="Misal: 180K / Rug"
+              class="w-full theme-subtle rounded-xl px-3 py-2 font-mono focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1">Modal Beli (SOL) *</label>
+            <input id="fSizeSol" type="number" step="0.01" required placeholder="0.5"
+              class="w-full theme-subtle rounded-xl px-3 py-2.5 font-mono font-bold focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Profit / Loss Bersih (SOL) *</label>
+            <input id="fPnlSol" type="number" step="0.01" required placeholder="Pakai minus jika Loss: -0.25"
+              class="w-full theme-subtle rounded-xl px-3 py-2.5 font-mono font-extrabold focus:outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1">Kondisi Mental Saat Masuk</label>
+          <select id="fEmotion" class="w-full theme-subtle rounded-xl px-3 py-2.5 font-semibold focus:outline-none">
+            <option value="Tenang & Sesuai Plan">🧘 Tenang & Sesuai Plan</option>
+            <option value="FOMO / Takut Ketinggalan">🏃 FOMO / Kejar Candle Hijau</option>
+            <option value="Greedy / Maruk">🤑 Greedy / Telat Take Profit</option>
+            <option value="Tilt / Balas Dendam">😡 Tilt / Balas Dendam Habis Loss</option>
+            <option value="Iseng / Kurang Fokus">😴 Iseng / Bosen / Ngantuk</option>
+          </select>
+        </div>
+
+        <!-- PILIH KESALAHAN -->
+        <div>
+          <label class="block font-extrabold text-rose-600 mb-1.5">⚠️ Centang Jika Ada Kesalahan di Trade Ini:</label>
+          <div id="mistakeTagsContainer" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <!-- CATATAN EVALUASI -->
+        <div>
+          <label class="block font-extrabold mb-1">📝 Catatan Pengingat / Hal yang Harus Dikoreksi *</label>
+          <textarea id="fNote" rows="3" required placeholder="Tulis jujur apa yang bikin loss atau profit di koin ini supaya besok ingat..."
+            class="w-full theme-subtle rounded-xl p-3 font-medium focus:outline-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-xl theme-btn font-extrabold text-sm shadow-md">
+          Simpan Jurnal & Perbarui Pengingat
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: PENGATURAN & BACKUP -->
+  <div id="settingsModal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="theme-card w-full max-w-md rounded-2xl p-5 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="font-extrabold text-sm flex items-center gap-2">
+          <i data-lucide="settings-2" class="w-4 h-4"></i> Pengaturan Batas Loss & Backup Data
+        </h3>
+        <button onclick="closeModal('settingsModal')" class="p-1 rounded-lg theme-subtle">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div>
+        <label class="block font-bold mb-1">🛑 Batas Maksimal Loss Per Hari (Tilt Guard)</label>
+        <div class="flex items-center gap-2">
+          <input id="maxLossInput" type="number" min="1" max="10" value="2" onchange="updateMaxDailyLoss(this.value)"
+            class="w-20 theme-subtle rounded-xl px-3 py-2 font-mono font-bold text-center" />
+          <span class="text-muted-custom">kali loss dalam sehari (Otomatis beri alarm berhenti)</span>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t space-y-2.5">
+        <p class="font-bold">Cadangkan / Pindahkan Data Jurnal:</p>
+        <button onclick="exportData()" class="w-full py-2.5 px-4 rounded-xl theme-btn font-bold flex items-center justify-center gap-2">
+          <i data-lucide="download" class="w-4 h-4"></i> Download Backup Jurnal (.JSON)
+        </button>
+
+        <label class="w-full py-2.5 px-4 rounded-xl theme-subtle font-bold flex items-center justify-center gap-2 cursor-pointer">
+          <i data-lucide="upload" class="w-4 h-4"></i> Restore Data dari File (.JSON)
+          <input type="file" accept=".json" onchange="importData(event)" class="hidden" />
+        </label>
+
+        <button onclick="clearAllData()" class="w-full py-2.5 px-4 rounded-xl bg-rose-500/10 text-rose-600 border border-rose-300 font-bold flex items-center justify-center gap-2 mt-3">
+          <i data-lucide="trash-2" class="w-4 h-4"></i> Reset Semua Data Jurnal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const MISTAKE_OPTIONS = [
+      "FOMO Pucuk Hijau",
+      "Lupa Cek Bundler/Dev",
+      "Telat Take Profit (Maruk)",
+      "Tidak Disiplin Cut Loss",
+      "Revenge Trade (Balas Dendam)",
+      "Over-Sizing (Kebesaran Modal)",
+      "Termakan Call Influencer/Grup",
+      "Masuk Koin Volume Sepi"
+    ];
+
+    let selectedMistakes = [];
+    let equityChartInstance = null;
+
+    const DEFAULT_TRADES = [
+      {
+        id: 1,
+        date: new Date().toISOString().split('T')[0],
+        ticker: "$PNUT",
+        platform: "GMGN",
+        ca: "2qEHjDLDLbuBgRYvsxhc5D6uDWAivNFZGan56P1tpump",
+        mcEntry: "180K",
+        mcExit: "520K",
+        sizeSol: 0.5,
+        pnlSol: 0.95,
+        emotion: "Tenang & Sesuai Plan",
+        mistakes: [],
+        note: "Sabar nunggu koreksi sehat setelah dev jual semua tokennya. Ambil modal di 2x, sisanya biarkan lari."
+      },
+      {
+        id: 2,
+        date: new Date().toISOString().split('T')[0],
+        ticker: "$FOMOAI",
+        platform: "Padre / BullX",
+        ca: "",
+        mcEntry: "900K",
+        mcExit: "210K",
+        sizeSol: 0.8,
+        pnlSol: -0.55,
+        emotion: "FOMO / Takut Ketinggalan",
+        mistakes: ["FOMO Pucuk Hijau", "Lupa Cek Bundler/Dev"],
+        note: "PENGINGAT KERAS: Jangan pernah beli pas candle 1 menit lagi terbang tinggi! Ternyata 30% supply dipegang wallet bundler dan langsung dibanting."
+      }
+    ];
+
+    // --- PENGATURAN TEMA ---
+    function setTheme(themeName) {
+      if (themeName === 'daylight') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', themeName);
+      }
+      localStorage.setItem('trenchlog_theme', themeName);
+
+      // Highlight active pill
+      document.querySelectorAll('.theme-pill').forEach(btn => {
+        btn.classList.remove('ring-2', 'ring-offset-1', 'ring-indigo-500');
+      });
+      const activeBtn = document.getElementById('t-' + themeName);
+      if (activeBtn) activeBtn.classList.add('ring-2', 'ring-offset-1', 'ring-indigo-500');
+
+      refreshApp();
+    }
+
+    function loadSavedTheme() {
+      const saved = localStorage.getItem('trenchlog_theme') || 'daylight';
+      setTheme(saved);
+    }
+
+    // --- DATA STORAGE ---
+    function getTrades() {
+      const saved = localStorage.getItem('trenchlog_trades');
+      if (!saved) {
+        localStorage.setItem('trenchlog_trades', JSON.stringify(DEFAULT_TRADES));
+        return DEFAULT_TRADES;
+      }
+      return JSON.parse(saved);
+    }
+
+    function saveTradesToStorage(trades) {
+      localStorage.setItem('trenchlog_trades', JSON.stringify(trades));
+    }
+
+    function getSolPrice() {
+      return parseFloat(localStorage.getItem('trenchlog_sol_price') || '150');
+    }
+
+    function updateSolPrice(val) {
+      localStorage.setItem('trenchlog_sol_price', val);
+      refreshApp();
+    }
+
+    function getMaxDailyLoss() {
+      return parseInt(localStorage.getItem('trenchlog_max_loss') || '2', 10);
+    }
+
+    function updateMaxDailyLoss(val) {
+      localStorage.setItem('trenchlog_max_loss', val);
+      refreshApp();
+    }
+
+    function loadDailyRule() {
+      const rule = localStorage.getItem('trenchlog_daily_rule');
+      if (rule) document.getElementById('dailyRuleText').textContent = `"${rule}"`;
+    }
+
+    function editDailyRule() {
+      const current = document.getElementById('dailyRuleText').textContent.replace(/^"|"$/g, '');
+      const updated = prompt("Tulis Pengingat / Aturan Wajibmu Hari Ini:", current);
+      if (updated && updated.trim() !== "") {
+        localStorage.setItem('trenchlog_daily_rule', updated.trim());
+        loadDailyRule();
+      }
+    }
+
+    // --- CHECKLIST SEBELUM BUY ---
+    function updateChecklistScore() {
+      const checks = document.querySelectorAll('.chk-item');
+      let checked = 0;
+      checks.forEach(c => { if (c.checked) checked++; });
+      const statusEl = document.getElementById('checklistStatus');
+
+      if (checked === 4) {
+        statusEl.className = "mt-3 p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-center text-xs font-extrabold text-emerald-600";
+        statusEl.textContent = "✅ Skor: 4/4 — Setup Aman! Tetap jaga ukuran modal.";
+      } else if (checked >= 2) {
+        statusEl.className = "mt-3 p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-center text-xs font-extrabold text-amber-600";
+        statusEl.textContent = `⚠️ Skor: ${checked}/4 — Hati-hati, masih ada yang belum dicek!`;
+      } else {
+        statusEl.className = "mt-3 p-2.5 rounded-xl bg-rose-500/15 border border-rose-400/40 text-center text-xs font-extrabold text-rose-600";
+        statusEl.textContent = `❌ Skor: ${checked}/4 — Jangan asal pencet Buy!`;
+      }
+    }
+
+    function resetChecklist() {
+      document.querySelectorAll('.chk-item').forEach(c => c.checked = false);
+      updateChecklistScore();
+    }
+
+    // --- MISTAKE TAGS ---
+    function renderMistakeOptions() {
+      const container = document.getElementById('mistakeTagsContainer');
+      container.innerHTML = MISTAKE_OPTIONS.map(tag => {
+        const active = selectedMistakes.includes(tag);
+        return `
+          <button type="button" onclick="toggleMistakeTag('${tag}')"
+            class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border transition ${
+              active
+                ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                : 'theme-subtle hover:opacity-80'
+            }">
+            ${active ? '⚠️ ' : '+ '}${tag}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function toggleMistakeTag(tag) {
+      if (selectedMistakes.includes(tag)) {
+        selectedMistakes = selectedMistakes.filter(t => t !== tag);
+      } else {
+        selectedMistakes.push(tag);
+      }
+      renderMistakeOptions();
+    }
+
+    // --- SIMPAN & HAPUS TRADE ---
+    function saveTrade(e) {
+      e.preventDefault();
+      const tickerRaw = document.getElementById('fTicker').value.trim().toUpperCase();
+      const ticker = tickerRaw.startsWith('$') ? tickerRaw : '$' + tickerRaw;
+
+      const newTrade = {
+        id: Date.now(),
+        date: new Date().toISOString().split('T')[0],
+        ticker,
+        platform: document.getElementById('fPlatform').value,
+        ca: document.getElementById('fCa').value.trim(),
+        mcEntry: document.getElementById('fMcEntry').value.trim() || '-',
+        mcExit: document.getElementById('fMcExit').value.trim() || '-',
+        sizeSol: parseFloat(document.getElementById('fSizeSol').value || '0'),
+        pnlSol: parseFloat(document.getElementById('fPnlSol').value || '0'),
+        emotion: document.getElementById('fEmotion').value,
+        mistakes: [...selectedMistakes],
+        note: document.getElementById('fNote').value.trim()
+      };
+
+      const trades = getTrades();
+      trades.unshift(newTrade);
+      saveTradesToStorage(trades);
+
+      document.getElementById('tradeForm').reset();
+      selectedMistakes = [];
+      closeModal('tradeModal');
+      refreshApp();
+    }
+
+    function deleteTrade(id) {
+      if (!confirm("Hapus catatan jurnal ini?")) return;
+      const trades = getTrades().filter(t => t.id !== id);
+      saveTradesToStorage(trades);
+      refreshApp();
+    }
+
+    // --- KALKULASI UTAMA ---
+    function refreshApp() {
+      const trades = getTrades();
+      const solPrice = getSolPrice();
+      const maxLoss = getMaxDailyLoss();
+      document.getElementById('solPriceInput').value = solPrice;
+      document.getElementById('maxLossInput').value = maxLoss;
+
+      let netSol = 0, wins = 0, losses = 0, todaySol = 0, todayLosses = 0;
+      const todayStr = new Date().toISOString().split('T')[0];
+      const mistakeStats = {};
+      const emotionStats = {};
+
+      trades.forEach(t => {
+        netSol += t.pnlSol;
+        if (t.pnlSol > 0) wins++;
+        else if (t.pnlSol < 0) losses++;
+
+        if (t.date === todayStr) {
+          todaySol += t.pnlSol;
+          if (t.pnlSol < 0) todayLosses++;
+        }
+
+        (t.mistakes || []).forEach(m => {
+          if (!mistakeStats[m]) mistakeStats[m] = { count: 0, lostSol: 0 };
+          mistakeStats[m].count += 1;
+          if (t.pnlSol < 0) mistakeStats[m].lostSol += Math.abs(t.pnlSol);
+        });
+
+        const em = t.emotion || 'Lainnya';
+        if (!emotionStats[em]) emotionStats[em] = { count: 0, netSol: 0, wins: 0 };
+        emotionStats[em].count += 1;
+        emotionStats[em].netSol += t.pnlSol;
+        if (t.pnlSol > 0) emotionStats[em].wins += 1;
+      });
+
+      // Update Tilt Guard
+      const tiltAlert = document.getElementById('tiltGuardAlert');
+      if (todayLosses >= maxLoss) {
+        tiltAlert.classList.remove('hidden');
+        document.getElementById('tiltGuardText').textContent =
+          `Hari ini kamu sudah tercatat LOSS ${todayLosses}x (Batas harianmu: ${maxLoss}x). Matikan chart sekarang supaya modalmu tidak habis karena emosi!`;
+      } else {
+        tiltAlert.classList.add('hidden');
+      }
+
+      // Update Kartu Statistik
+      const netEl = document.getElementById('statNetSol');
+      netEl.textContent = `${netSol >= 0 ? '+' : ''}${netSol.toFixed(2)} SOL`;
+      netEl.className = `mt-1.5 text-xl font-extrabold font-mono ${netSol >= 0 ? 'text-emerald-600' : 'text-rose-600'}`;
+      document.getElementById('statNetUsd').textContent = `≈ ${netSol >= 0 ? '+' : '-'}$${Math.abs(netSol * solPrice).toFixed(1)} USD`;
+
+      const totalTrades = trades.length;
+      const winRate = totalTrades > 0 ? Math.round((wins / totalTrades) * 100) : 0;
+      document.getElementById('statWinRate').textContent = `${winRate}%`;
+      document.getElementById('statWinLossCount').textContent = `${wins} Profit / ${losses} Loss`;
+
+      const todayEl = document.getElementById('statTodaySol');
+      todayEl.textContent = `${todaySol >= 0 ? '+' : ''}${todaySol.toFixed(2)} SOL`;
+      todayEl.className = `mt-1.5 text-xl font-extrabold font-mono ${todaySol >= 0 ? 'text-emerald-600' : 'text-rose-600'}`;
+      document.getElementById('statTodayStatus').textContent = `Loss Hari Ini: ${todayLosses}/${maxLoss}`;
+
+      const sortedMistakes = Object.entries(mistakeStats).sort((a, b) => b[1].lostSol - a[1].lostSol || b[1].count - a[1].count);
+
+      if (sortedMistakes.length > 0) {
+        const [topName, topData] = sortedMistakes[0];
+        document.getElementById('statBiggestLeak').textContent = topName;
+        document.getElementById('statBiggestLeakVal').textContent = `-${topData.lostSol.toFixed(2)} SOL (${topData.count}x)`;
+
+        document.getElementById('topMistakesBanner').innerHTML = sortedMistakes.slice(0, 3).map(([name, d]) => `
+          <span class="px-2.5 py-1 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs font-extrabold flex items-center gap-1.5">
+            <span>🚫 ${name}</span>
+            <span class="font-mono">(-${d.lostSol.toFixed(2)} SOL)</span>
+          </span>
+        `).join('');
+      } else {
+        document.getElementById('statBiggestLeak').textContent = "Sangat Disiplin";
+        document.getElementById('statBiggestLeakVal').textContent = "0.00 SOL hilang";
+        document.getElementById('topMistakesBanner').innerHTML = `<span class="text-xs text-emerald-600 font-bold">✨ Belum ada kesalahan fatal tercatat!</span>`;
+      }
+
+      renderTrades();
+      renderAnalyticsTab(sortedMistakes, emotionStats, solPrice);
+      renderChart(trades);
+      lucide.createIcons();
+    }
+
+    function renderTrades() {
+      const trades = getTrades();
+      const solPrice = getSolPrice();
+      const filter = document.getElementById('filterResult').value;
+      const query = document.getElementById('searchTicker').value.toLowerCase();
+
+      const filtered = trades.filter(t => {
+        if (filter === 'WIN' && t.pnlSol <= 0) return false;
+        if (filter === 'LOSS' && t.pnlSol >= 0) return false;
+        if (query) {
+          const hay = `${t.ticker} ${t.note} ${(t.mistakes || []).join(' ')} ${t.emotion}`.toLowerCase();
+          return hay.includes(query);
+        }
+        return true;
+      });
+
+      const listEl = document.getElementById('tradesList');
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="text-center py-8 text-muted-custom text-xs font-medium">Belum ada catatan trade yang sesuai filter.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(t => {
+        const isWin = t.pnlSol >= 0;
+        const usdVal = Math.abs(t.pnlSol * solPrice).toFixed(1);
+        const roi = t.sizeSol > 0 ? Math.round((t.pnlSol / t.sizeSol) * 100) : 0;
+
+        return `
+          <div class="rounded-2xl theme-subtle p-4 border-l-4 ${isWin ? 'border-l-emerald-500' : 'border-l-rose-500'}">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="font-extrabold text-sm">${t.ticker}</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-lg theme-badge">${t.platform}</span>
+                  <span class="text-[11px] text-muted-custom font-mono">${t.date}</span>
+                </div>
+                <div class="text-xs text-muted-custom mt-1 font-mono">
+                  MC: <strong>${t.mcEntry}</strong> → <strong>${t.mcExit}</strong> • Modal: <strong>${t.sizeSol} SOL</strong>
+                </div>
+              </div>
+
+              <div class="text-right">
+                <div class="font-mono font-extrabold text-sm ${isWin ? 'text-emerald-600' : 'text-rose-600'}">
+                  ${isWin ? '+' : ''}${t.pnlSol.toFixed(2)} SOL (${roi >= 0 ? '+' : ''}${roi}%)
+                </div>
+                <div class="text-[11px] font-mono text-muted-custom">
+                  ${isWin ? '+' : '-'}$${usdVal}
+                </div>
+              </div>
+            </div>
+
+            ${t.ca ? `
+              <div class="mt-2 flex items-center gap-2 text-[11px]">
+                <a href="https://gmgn.ai/sol/token/${t.ca}" target="_blank" class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-700 font-bold hover:underline">🔗 Cek GMGN</a>
+                <a href="https://dexscreener.com/solana/${t.ca}" target="_blank" class="px-2 py-0.5 rounded bg-sky-500/15 text-sky-700 font-bold hover:underline">🦅 DexScreener</a>
+              </div>
+            ` : ''}
+
+            <div class="flex flex-wrap items-center gap-1.5 mt-2.5">
+              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-lg theme-badge">
+                ${t.emotion}
+              </span>
+              ${(t.mistakes || []).map(m => `
+                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-rose-500/15 text-rose-600 border border-rose-400/30">
+                  ⚠️ ${m}
+                </span>
+              `).join('')}
+            </div>
+
+            <div class="mt-3 p-3 rounded-xl theme-card text-xs flex items-start justify-between gap-3">
+              <p class="leading-relaxed"><strong class="${isWin ? 'text-emerald-600' : 'text-rose-600'}">Catatan Koreksi:</strong> ${t.note}</p>
+              <button onclick="deleteTrade(${t.id})" class="text-muted-custom hover:text-rose-600 shrink-0" title="Hapus">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderAnalyticsTab(sortedMistakes, emotionStats, solPrice) {
+      const mContainer = document.getElementById('mistakeBreakdownList');
+      if (sortedMistakes.length === 0) {
+        mContainer.innerHTML = `<p class="text-xs text-muted-custom">Belum ada catatan kesalahan.</p>`;
+      } else {
+        mContainer.innerHTML = sortedMistakes.map(([name, d]) => `
+          <div class="p-3.5 rounded-xl theme-subtle flex items-center justify-between">
+            <div>
+              <div class="text-xs font-extrabold flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> ${name}
+              </div>
+              <div class="text-[11px] text-muted-custom mt-0.5">Terulang ${d.count} kali</div>
+            </div>
+            <div class="text-right font-mono">
+              <div class="text-xs font-extrabold text-rose-600">-${d.lostSol.toFixed(2)} SOL</div>
+              <div class="text-[10px] text-muted-custom">≈ -$${(d.lostSol * solPrice).toFixed(1)}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const eContainer = document.getElementById('emotionBreakdownList');
+      eContainer.innerHTML = Object.entries(emotionStats).map(([emotion, d]) => {
+        const wr = Math.round((d.wins / d.count) * 100);
+        return `
+          <div class="p-3.5 rounded-xl theme-subtle">
+            <div class="text-xs font-extrabold">${emotion}</div>
+            <div class="mt-2 flex items-center justify-between text-xs font-mono">
+              <span class="text-muted-custom">Winrate: <strong>${wr}%</strong> (${d.count}x)</span>
+              <span class="${d.netSol >= 0 ? 'text-emerald-600' : 'text-rose-600'} font-extrabold">
+                ${d.netSol >= 0 ? '+' : ''}${d.netSol.toFixed(2)} SOL
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderChart(trades) {
+      const ctx = document.getElementById('equityChart').getContext('2d');
+      const chronological = [...trades].reverse();
+      let cumulative = 0;
+      const labels = ['Mulai'];
+      const dataPoints = [0];
+
+      chronological.forEach(t => {
+        cumulative += t.pnlSol;
+        labels.push(t.ticker);
+        dataPoints.push(parseFloat(cumulative.toFixed(2)));
+      });
+
+      const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#4f46e5';
+
+      if (equityChartInstance) equityChartInstance.destroy();
+
+      equityChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Saldo PnL (SOL)',
+            data: dataPoints,
+            borderColor: accentColor,
+            backgroundColor: accentColor + '22',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.35,
+            pointRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { font: { size: 10 } }, grid: { display: false } },
+            y: { ticks: { font: { size: 10 } }, grid: { color: 'rgba(148, 163, 184, 0.2)' } }
+          }
+        }
+      });
+    }
+
+    function switchTab(tab) {
+      document.getElementById('tab-dashboard').classList.toggle('hidden', tab !== 'dashboard');
+      document.getElementById('tab-analytics').classList.toggle('hidden', tab !== 'analytics');
+      document.getElementById('nav-dashboard').className = `flex flex-col items-center gap-1 text-xs py-1 ${tab === 'dashboard' ? 'font-extrabold' : 'text-muted-custom font-bold'}`;
+      document.getElementById('nav-analytics').className = `flex flex-col items-center gap-1 text-xs py-1 ${tab === 'analytics' ? 'font-extrabold' : 'text-muted-custom font-bold'}`;
+    }
+
+    function openTradeModal() {
+      selectedMistakes = [];
+      renderMistakeOptions();
+      openModal('tradeModal');
+    }
+
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(getTrades(), null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", `trenchlog_backup_${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            saveTradesToStorage(imported);
+            refreshApp();
+            closeModal('settingsModal');
+            alert("Data jurnal berhasil dipulihkan!");
+          }
+        } catch (err) {
+          alert("File JSON tidak valid.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function clearAllData() {
+      if (confirm("Hapus seluruh catatan jurnal?")) {
+        saveTradesToStorage([]);
+        refreshApp();
+        closeModal('settingsModal');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadDailyRule();
+      loadSavedTheme();
+    });
+  </script>
+</body>
+</html>
